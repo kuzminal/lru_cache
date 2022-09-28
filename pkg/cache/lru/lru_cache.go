@@ -41,21 +41,19 @@ func (L *LRU) Get(key string) (value string, ok bool) {
 	}
 	L.queue.MoveToFront(element)
 	val, ok := element.Value.(*Item)
-	if ok {
-		return val.Value, true
-	} else {
+	if !ok {
 		return "", false
 	}
+	return val.Value, true
 }
 
 func (L *LRU) Remove(key string) (ok bool) {
 	element, exists := L.items[key]
 	if !exists {
 		return false
-	} else {
-		L.queue.Remove(element)
-		return true
 	}
+	L.queue.Remove(element)
+	return true
 }
 
 func (L *LRU) removeLastElement() {

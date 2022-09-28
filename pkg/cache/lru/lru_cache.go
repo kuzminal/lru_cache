@@ -40,11 +40,10 @@ func (L *LRU) Get(key string) (value string, ok bool) {
 		return "", false
 	}
 	L.queue.MoveToFront(element)
-	val, ok := element.Value.(*Item)
-	if !ok {
-		return "", false
+	if val, ok := element.Value.(*Item); ok {
+		return val.Value, true
 	}
-	return val.Value, true
+	return "", false
 }
 
 func (L *LRU) Remove(key string) (ok bool) {
